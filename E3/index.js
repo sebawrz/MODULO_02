@@ -82,9 +82,11 @@ const searchPizza = (id) => {
   pizza = pizzas.find((pizza) => pizza.id == id)
   if (pizza) {
     renderPizza(pizza)
+    save("ultimaPizza", pizza, localStorage);
   }
   else {
     renderError(id);
+    remove("ultimaPizza", localStorage);
   }
 }
 
@@ -92,12 +94,10 @@ const searchPizza = (id) => {
 
 const renderPizza = (pizza) => {
   card.innerHTML = null;
-
   card.innerHTML = `<picture><img src="${pizza.imagen}" alt="${pizza.nombre}"></picture>
   <h1>${pizza.nombre}</h1>
   <h2>$ ${pizza.precio}</h2>
   <p>${pizza.ingredientes} </p>`;
-  save("ultimaPizza", pizza, localStorage);
 }
 
 //Render error in card
@@ -105,12 +105,12 @@ const renderPizza = (pizza) => {
 const renderError = (id) => {
   card.innerHTML = null;
   card.innerHTML = `<p>Lo siento. No existen pizza con ID ${id}.</p> <p>Pruebe con otro ID. </p>`;
-  remove("ultimaPizza", localStorage);
 }
 
 //Initialization
 
-if (read("ultimaPizza", localStorage)) {
+ultimaPizza = read("ultimaPizza", localStorage);
+if (ultimaPizza) {
   renderPizza(read("ultimaPizza", localStorage));
 }
 else {
