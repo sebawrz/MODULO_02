@@ -51,6 +51,7 @@ const getInputValue = async (event) => {
     let data = await makeRequest(apiURL.base + apiURL.getPokemon, id);
     if (data != null) {
       let pokemon = {};
+      pokemon.id = data.id;
       pokemon.name = data.name;
       pokemon.type = data.types[0].type.name;
       pokemon.height = data.height;
@@ -76,7 +77,7 @@ const getInputValue = async (event) => {
 const renderCard = (pokemon) => {
   card.innerHTML = null;
   return card.innerHTML = `<picture><img src="${pokemon.img}" alt="${pokemon.name}"></picture>
-  <h1>${pokemon.name.toUpperCase()}</h1>
+  <h1>${pokemon.name.toUpperCase()} #${pokemon.id}</h1>
   <h2>Height: ${pokemon.height / 10}m</h2>
   <h2>Weight: ${pokemon.weight / 10}kg</h2>
   <h2>Type: ${pokemon.type.toUpperCase()}</h2>`;
@@ -96,6 +97,7 @@ const renderError = () => {
 let ultimoPokemon = read("ultimoPokemon", localStorage);
 if (ultimoPokemon) {
   renderCard(ultimoPokemon);
+  formulario.elements.id.value = ultimoPokemon.id;
 }
 else {
   card.innerHTML = null;
